@@ -49,11 +49,6 @@ class CreateAccountView(View):
                      context={'errors': form.errors})
 
 
-
-
-
-
-
 # class IndexView(View):
 #
 #     def get(self, request):
