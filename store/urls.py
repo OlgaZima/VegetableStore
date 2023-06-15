@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import CartView, ProductSingle, ShopView
+from .views import CartView, ProductSingle, ShopView, CartViewSet
 
+from rest_framework import routers
 app_name = 'store'
 
 urlpatterns = [
@@ -8,3 +9,6 @@ urlpatterns = [
     path('product/<int:id>/', ProductSingle.as_view(), name='product'),
     path('', ShopView.as_view(), name='shop')
 ]
+
+router = routers.DefaultRouter()
+router.register(r'cart', CartViewSet)
