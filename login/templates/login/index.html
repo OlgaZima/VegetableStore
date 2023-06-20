@@ -14,9 +14,9 @@
 							<i class="fa fa-user-o" aria-hidden="true"></i>
 						</span>
 					</div>
-                    {% if errors.username%}
+                    {% if errors%}
 	                <span class="txt2">
-                    {{errors.username}}
+                    {{errors}}
 					</span>
                     {% endif %}
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
@@ -26,9 +26,9 @@
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
 					</div>
-					{% if errors.password%}
+					{% if errors%}
 	                <span class="txt2">
-                    {{errors.password}}
+                    {{errors}}
 					</span>
                     {% endif %}
 					<div class="container-login100-form-btn">
