@@ -60,3 +60,4 @@ class CreateAccountView(View):
 #
 #     def post(self, request):
 #         return JsonResponse(request.POST, json_dumps_params={"indent": 4})
+

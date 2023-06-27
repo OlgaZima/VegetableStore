@@ -61,9 +61,20 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user}"
 
+class WishListTwo(models.Model):
+    userwish = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __repr__(self):
+        return f"{self.userwish}: {self.product}"
+        #return f"{self.product}"
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
 

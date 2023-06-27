@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.db.models import OuterRef, Subquery, F, ExpressionWrapper, DecimalField, Case, When
 from django.utils import timezone
-from .models import Product, Discount, Cart
+from .models import Product, Discount, Cart, WishListTwo, Profile
 from rest_framework import viewsets, response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import CartSerializer
@@ -244,6 +245,31 @@ class CartViewSet(viewsets.ModelViewSet):
       cart_item = self.get_queryset().get(id=kwargs['pk'])
       cart_item.delete()
       return response.Response({'message': 'Product delete from cart'}, status=201)
+
+
+class WishListView(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            products = WishListTwo.objects.filter(userwish__user=request.user)
+            #products = WishListTwo.objects.all()
+            return render(request, 'store/wishlist.html', {"data": products})
+        else:
+            return redirect('login:login')
+
+
+class WishlistViewCart(View):
+    def get(self, request, product_id):
+        wishlist = WishListTwo.objects.filter(userwish__user=request.user, product__id=product_id)
+        if wishlist:
+            wishlist_item = wishlist[0]
+            wishlist_item.quantity += 1
+        else:
+            product = get_object_or_404(Product, id=product_id)
+            user = get_object_or_404(WishListTwo, userwish__user=request.user)
+            wishlist_item = WishListTwo(wishlist=user, product=product)
+        wishlist_item.save()
+        return redirect('store:wishlist')
+
 
 
 
