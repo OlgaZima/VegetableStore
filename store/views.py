@@ -259,16 +259,18 @@ class WishListView(View):
 
 class WishlistViewCart(View):
     def get(self, request, product_id):
-        wishlist = WishListTwo.objects.filter(userwish__user=request.user, product__id=product_id)
-        if wishlist:
-            wishlist_item = wishlist[0]
-            wishlist_item.quantity += 1
+        if request.user.is_authenticated:
+            wishlist = WishListTwo.objects.filter(userwish__user=request.user, product__id=product_id)
+            if wishlist:
+                wishlist_item = wishlist[0]
+                wishlist_item.quantity += 1
+            else:
+                product = get_object_or_404(Product, id=product_id)
+                wishlist_item = WishListTwo(userwish=get_object_or_404(Profile, user=request.user), product=product)
+            wishlist_item.save()
+            return redirect('store:wishlist')
         else:
-            product = get_object_or_404(Product, id=product_id)
-            user = get_object_or_404(WishListTwo, userwish__user=request.user)
-            wishlist_item = WishListTwo(wishlist=user, product=product)
-        wishlist_item.save()
-        return redirect('store:wishlist')
+            return redirect('login:login')
 
 class WishListTwoViewSet(viewsets.ModelViewSet):
   queryset = WishListTwo.objects.all()
