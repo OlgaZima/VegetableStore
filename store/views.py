@@ -7,7 +7,7 @@ from django.utils import timezone
 from .models import Product, Discount, Cart, WishListTwo, Profile
 from rest_framework import viewsets, response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import CartSerializer
+from .serializers import CartSerializer, WishListTwoSerializer
 
 # Create your views here.
 
@@ -270,6 +270,14 @@ class WishlistViewCart(View):
         wishlist_item.save()
         return redirect('store:wishlist')
 
+class WishListTwoViewSet(viewsets.ModelViewSet):
+  queryset = WishListTwo.objects.all()
+  serializer_class = WishListTwoSerializer
+  permission_classes = (IsAuthenticated,)
+
+
+  def get_queryset(self):
+      return self.queryset.filter(userwish__user=self.request.user)
 
 
 

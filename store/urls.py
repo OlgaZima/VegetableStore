@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CartView, ProductSingle, ShopView, CartViewSet, WishListView, WishlistViewCart
+from .views import CartView, ProductSingle, ShopView, CartViewSet, WishListView, WishlistViewCart, WishListTwoViewSet
 
 from rest_framework import routers
 app_name = 'store'
@@ -14,4 +14,5 @@ urlpatterns = [
 
 router = routers.DefaultRouter()
 router.register(r'cart', CartViewSet)
+router.register(r'wishlist', WishListTwoViewSet)
 
